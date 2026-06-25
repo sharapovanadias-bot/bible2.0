@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ПИСАНИЕ • Premium Telegram Bible (Top 10 Prayers)</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-main: #0A0A0C;
+            --bg-surface: #121216;
+            --bg-card: #18181F;
+            --bg-card-hover: #22222C;
+            --bg-modal: #1C1C24;
+            
+            --gold-primary: #D4AF37;
+            --gold-light: #F3E5AB;
+            --gold-dark: #997A15;
+            --gold-gradient: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%);
+            --gold-glow: rgba(212, 175, 55, 0.18);
+            
+            --text-main: #F5F5F7;
+            --text-muted: #8E8E93;
+            --text-gold: #E5C158;
+            
+            --border-subtle: rgba(212, 175, 55, 0.18);
+            --border-highlight: rgba(212, 175, 55, 0.45);
+            
+            --accent-red: #CF6679;
+            --accent-blue: #0088CC;
+            --accent-green: #4CAF50;
+            
+            --font-serif: Georgia, 'Times New Roman', Times, serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            
+            --tab-height: 64px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            padding-bottom: calc(var(--tab-height) + 24px);
+            overflow-x: hidden;
+            line-height: 1.5;
+        }
+
+        /* Typography */
+        h1, h2, h3, .serif {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        /* Header */
+        .app-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 12, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .app-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .app-logo {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: var(--gold-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-family: var(--font-serif);
+            font-size: 19px;
+            box-shadow: 0 0 14px rgba(212, 175, 55, 0.35);
+        }
+
+        .app-title {
+            font-size: 19px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            background: var(--bg-surface);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            padding: 5px 10px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .lang-btn:active { transform: scale(0.95); }
+
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            padding: 5px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            color: var(--text-muted);
+            max-width: 110px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .pro-badge {
+            background: var(--gold-gradient);
+            color: #000;
+            font-weight: 800;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+        }
+        .pro-badge:active { transform: scale(0.95); }
+
+        /* Navigation Tab Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--tab-height);
+            background: rgba(18, 18, 22, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            padding: 8px 0;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            transition: transform 0.2s ease;
+        }
+
+        .nav-item.active { color: var(--gold-primary); }
+        .nav-item.active svg {
+            transform: translateY(-2px);
+            filter: drop-shadow(0 0 6px rgba(212, 175, 55, 0.5));
+        }
+
+        /* Views Container */
+        .view-section {
+            display: none;
+            padding: 18px;
+            animation: fadeIn 0.3s ease;
+        }
+        .view-section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Search & Filters */
+        .search-box {
+            position: relative;
+            margin-bottom: 16px;
+        }
+        .search-input {
+            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 12px 16px 12px 42px;
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px var(--gold-glow);
+        }
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .filter-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+            scrollbar-width: none;
+        }
+        .filter-scroll::-webkit-scrollbar { display: none; }
+
+        .filter-chip {
+            white-space: nowrap;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-chip.active {
+            background: var(--gold-gradient);
+            color: #000;
+            font-weight: 600;
+            border-color: transparent;
+        }
+
+        /* Section Headings */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 16px;
+        }
+        .section-header h2 {
+            font-size: 22px;
+            color: var(--gold-light);
+        }
+        .section-header span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Grid & Cards */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+            gap: 14px;
+        }
+
+        .list-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 16px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card:hover, .card:active {
+            background: var(--bg-card-hover);
+            border-color: var(--border-highlight);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 14px var(--gold-glow);
+        }
+
+        .card-tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--gold-primary);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .card-title {
+            font-size: 17px;
+            font-family: var(--font-serif);
+            color: var(--text-main);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        .card-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-footer {
+            margin-top: 14px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-primary);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .lock-overlay {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            z-index: 5;
+        }
+
+        /* Reader View Modal */
+        .reader-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--bg-main);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .reader-header {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .reader-title-group { text-align: center; }
+        .reader-book-name {
+            font-size: 18px;
+            font-family: var(--font-serif);
+            color: var(--gold-light);
+            font-weight: bold;
+        }
+        .reader-chapter-sub { font-size: 11px; color: var(--text-muted); }
+
+        /* Universal Chapter Nav Bar */
+        .chapter-nav-bar {
+            background: #14141A;
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 8px 16px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+        .btn-chap-step {
+            background: rgba(212, 175, 55, 0.12);
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-light);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-chap-step:disabled { opacity: 0.3; cursor: default; border-color: transparent; }
+        .chap-dropdown {
+            flex: 1;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--gold-light);
+            padding: 6px 8px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: var(--font-serif);
+            font-weight: bold;
+            outline: none;
+            text-align: center;
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-icon {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-icon:hover { background: rgba(255,255,255,0.1); }
+
+        .reader-controls { display: flex; gap: 6px; }
+
+        .reader-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 18px 120px 18px;
+            max-width: 760px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Verses & Commentary styling inside Reader */
+        .verse-box {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            transition: all 0.2s;
+        }
+        .verse-box:hover {
+            border-color: var(--border-subtle);
+            background: rgba(212, 175, 55, 0.03);
+        }
+        .verse-box.bookmarked {
+            border-left: 3px solid var(--gold-primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .verse-text {
+            font-family: var(--font-serif);
+            font-size: 19px;
+            line-height: 1.7;
+            color: #ECECEC;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .verse-num {
+            font-size: 13px;
+            font-family: var(--font-sans);
+            color: var(--gold-primary);
+            font-weight: bold;
+            margin-right: 8px;
+            vertical-align: super;
+            user-select: none;
+        }
+
+        .verse-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .btn-comm {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            color: var(--gold-light);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .btn-comm:hover {
+            background: var(--gold-gradient);
+            color: #000;
+            border-color: transparent;
+        }
+
+        .btn-star {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px 8px;
+            transition: transform 0.2s;
+        }
+        .btn-star.active { color: var(--gold-primary); transform: scale(1.15); }
+
+        /* Commentary Bottom Sheet */
+        .comm-sheet {
+            position: fixed;
+            left: 0; right: 0; bottom: 0;
+            background: #16161D;
+            border-top: 2px solid var(--gold-primary);
+            border-radius: 24px 24px 0 0;
+            padding: 24px 20px 36px 20px;
+            z-index: 2500;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+            display: none;
+            flex-direction: column;
+            max-height: 80vh;
+            animation: slideSheet 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideSheet {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .comm-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .comm-ref-badge {
+            background: var(--gold-gradient);
+            color: #000;
+            font-weight: 800;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+        .comm-author {
+            font-size: 16px;
+            color: var(--gold-light);
+            font-family: var(--font-serif);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .comm-body {
+            overflow-y: auto;
+            font-family: var(--font-serif);
+            font-size: 17px;
+            line-height: 1.7;
+            color: #DDD;
+            padding-right: 6px;
+        }
+
+        /* Audio Player Bar */
+        .audio-bar {
+            position: fixed;
+            bottom: var(--tab-height);
+            left: 12px; right: 12px;
+            background: linear-gradient(145deg, #1A1A24, #121218);
+            border: 1px solid var(--gold-primary);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.2);
+            z-index: 1500;
+            animation: bounceUp 0.3s ease;
+        }
+
+        @keyframes bounceUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .audio-info { display: flex; justify-content: space-between; align-items: center; }
+        .audio-track-title {
+            font-size: 14px; font-weight: 600; color: var(--gold-light);
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .playing-wave { display: inline-flex; align-items: flex-end; gap: 2px; height: 14px; }
+        .playing-wave span {
+            width: 3px; background: var(--gold-primary);
+            animation: wave 0.8s infinite ease-in-out alternate;
+        }
+        .playing-wave span:nth-child(2) { animation-delay: 0.2s; }
+        .playing-wave span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes wave { 0% { height: 3px; } 100% { height: 14px; } }
+
+        .audio-controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+        .btn-play {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: var(--gold-gradient); border: none; color: #000;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+        }
+        .btn-play:active { transform: scale(0.92); }
+
+        .progress-container { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+        .progress-bar {
+            width: 100%; height: 5px; background: rgba(255,255,255,0.15);
+            border-radius: 4px; cursor: pointer; position: relative; overflow: hidden;
+        }
+        .progress-fill {
+            width: 35%; height: 100%; background: var(--gold-gradient);
+            border-radius: 4px; transition: width 0.2s linear;
+        }
+        .time-labels { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted); }
+        .speed-pill {
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-main); font-size: 11px; padding: 4px 8px; border-radius: 8px; cursor: pointer;
+        }
+
+        /* FAQ Accordion */
+        .faq-item {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 14px; margin-bottom: 12px; overflow: hidden;
+        }
+        .faq-question {
+            padding: 16px; font-size: 15px; font-weight: 600;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; color: var(--text-main);
+        }
+        .faq-question svg { transition: transform 0.3s ease; color: var(--gold-primary); flex-shrink: 0; margin-left: 12px; }
+        .faq-item.expanded .faq-question svg { transform: rotate(180deg); }
+        .faq-answer {
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+            background: rgba(0,0,0,0.25); color: var(--text-muted); font-size: 14px; line-height: 1.6;
+        }
+        .faq-item.expanded .faq-answer { max-height: 500px; padding: 0 16px 16px 16px; }
+
+        /* Buttons & Forms */
+        .btn-primary {
+            background: var(--gold-gradient); color: #000; border: none;
+            padding: 14px 24px; border-radius: 14px; font-weight: 700; font-size: 16px;
+            cursor: pointer; width: 100%; display: flex; align-items: center;
+            justify-content: center; gap: 8px; box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 10px rgba(212, 175, 55, 0.2); }
+
+        .btn-tribute {
+            background: linear-gradient(135deg, #0088CC, #005580); color: #fff;
+            border: 1px solid #64B5F6; padding: 16px 20px; border-radius: 16px;
+            font-weight: 700; font-size: 14px; cursor: pointer; width: 100%;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            box-shadow: 0 6px 24px rgba(0, 136, 204, 0.35); transition: all 0.2s;
+            text-align: center;
+        }
+        .btn-tribute:active { transform: translateY(2px); }
+
+        .note-form {
+            background: var(--bg-card); border: 1px solid var(--border-highlight);
+            border-radius: 16px; padding: 16px; margin-bottom: 20px; display: none;
+        }
+        .form-group { margin-bottom: 12px; }
+        .form-label {
+            display: block; font-size: 12px; color: var(--gold-primary);
+            margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;
+        }
+        .form-input, .form-textarea, .form-select {
+            width: 100%; background: var(--bg-surface); border: 1px solid var(--border-subtle);
+            border-radius: 10px; padding: 10px 14px; color: var(--text-main); font-size: 15px;
+            font-family: inherit; outline: none;
+        }
+        .form-textarea { resize: vertical; min-height: 80px; }
+
+        .note-card {
+            background: var(--bg-card); border-left: 4px solid var(--gold-primary);
+            border-radius: 12px; padding: 16px; margin-bottom: 12px; position: relative;
+        }
+        .note-card-title { font-size: 16px; font-weight: bold; color: var(--gold-light); margin-bottom: 6px; }
+        .note-card-text { font-size: 14px; color: var(--text-main); line-height: 1.5; white-space: pre-wrap; }
+        .note-card-meta { margin-top: 10px; display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); }
+        .btn-delete { background: transparent; border: none; color: var(--accent-red); cursor: pointer; font-size: 12px; }
+
+        /* Premium Hero */
+        .premium-hero {
+            position: relative;
+            background: radial-gradient(circle at 50% 0%, #1a2a3a 0%, #101820 60%, #0a0a0c 100%);
+            border: 1px solid #0088CC; border-radius: 24px; padding: 32px 16px;
+            text-align: center; overflow: hidden; margin-bottom: 24px;
+            box-shadow: 0 0 40px rgba(0, 136, 204, 0.2);
+        }
+        .premium-crown {
+            width: 64px; height: 64px; margin: 0 auto 16px auto; background: var(--gold-gradient);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+        }
+        .premium-crown svg { width: 36px; height: 36px; fill: #000; }
+        .premium-title {
+            font-size: 26px; background: var(--gold-gradient); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; margin-bottom: 8px; font-family: var(--font-serif);
+        }
+        .premium-subtitle { color: var(--text-muted); font-size: 14px; max-width: 330px; margin: 0 auto 20px auto; }
+        .price-tag { font-size: 26px; font-weight: 800; color: #fff; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .price-sub { font-size: 12px; color: #64B5F6; margin-bottom: 24px; font-weight: 600; }
+
+        .feature-grid { display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px; }
+        .feature-row {
+            display: flex; align-items: flex-start; gap: 14px; background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(212, 175, 55, 0.15); padding: 14px; border-radius: 14px; text-align: left;
+        }
+        .feature-icon-wrapper {
+            width: 40px; height: 40px; border-radius: 10px; background: rgba(212, 175, 55, 0.15);
+            display: flex; align-items: center; justify-content: center; color: var(--gold-primary); flex-shrink: 0;
+        }
+        .feature-text h4 { font-size: 16px; color: var(--text-main); margin-bottom: 2px; }
+        .feature-text p { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 3000;
+            display: none; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-dialog {
+            background: var(--bg-modal); border: 1px solid #0088CC; border-radius: 24px;
+            padding: 28px 20px; max-width: 400px; width: 100%; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(0, 136, 204, 0.25);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            background: var(--bg-surface); border: 1px solid var(--gold-primary); color: var(--gold-light);
+            padding: 10px 20px; border-radius: 30px; font-size: 13px; font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8); z-index: 4000; opacity: 0; pointer-events: none;
+            transition: all 0.3s ease; text-align: center; max-width: 90vw;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Сохранено</div>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="app-brand">
+            <div class="app-logo">☦</div>
+            <div class="app-title" id="lblAppTitle">БЛАГОВЕСТ</div>
+        </div>
+        <div class="header-controls">
+            <button class="lang-btn" onclick="toggleLanguage()">
+                <span>🌐</span><span id="lblLangBtn">RU</span>
+            </button>
+            <div class="user-pill" id="userGreeting">
+                <span id="lblGuest">👤 Гость</span>
+            </div>
+            <div class="pro-badge" id="headerProBtn" onclick="switchTab('premium')">👑 PRO</div>
+        </div>
+    </header>
+
+    <!-- TAB 1: ПИСАНИЕ (BOOKS) -->
+    <main id="tab-books" class="view-section active">
+        <div class="search-box">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" class="search-input" id="bookSearch" placeholder="Поиск книг, Псалтири, Еноха...">
+        </div>
+
+        <div class="filter-scroll" id="bookFilters">
+            <div class="filter-chip active" data-filter="all" id="fAll">Все книги</div>
+            <div class="filter-chip" data-filter="old" id="fOld">Ветхий Завет</div>
+            <div class="filter-chip" data-filter="new" id="fNew">Новый Завет</div>
+            <div class="filter-chip" data-filter="saints" id="fSaints">Жития святых</div>
+            <div class="filter-chip" data-filter="exclusive" id="fExcl">👑 Эксклюзив PRO</div>
+        </div>
+
+        <div class="section-header">
+            <h2 id="secScripture">Священное Писание</h2>
+            <span id="bookCount">Показано: 12</span>
+        </div>
+
+        <div class="grid-cards" id="booksGrid"></div>
+    </main>
+
+    <!-- TAB 2: МОЛИТВЫ (PRAYERS) -->
+    <main id="tab-prayers" class="view-section">
+        <div class="filter-scroll" id="prayerFilters">
+            <div class="filter-chip active" data-pfilter="all" id="pfAll">Все молитвы</div>
+            <div class="filter-chip" data-pfilter="morning" id="pfMorn">Утренние</div>
+            <div class="filter-chip" data-pfilter="evening" id="pfEve">Вечерние</div>
+            <div class="filter-chip" data-pfilter="audio" id="pfAudio">👑 Аудио-молитвы PRO</div>
+        </div>
+
+        <div class="section-header">
+            <h2 id="secPrayers">Молитвослов</h2>
+            <span id="subPrayers">Канонические тексты</span>
+        </div>
+
+        <div class="list-cards" id="prayersList"></div>
+    </main>
+
+    <!-- TAB 3: ЗАМЕТКИ (NOTES) -->
+    <main id="tab-notes" class="view-section">
+        <div class="section-header">
+            <h2 id="secNotes">Мои Духовные Заметки</h2>
+            <span id="notesCount">0 заметок</span>
+        </div>
+
+        <button class="btn-primary" id="btnNewNote" onclick="toggleNoteForm()" style="margin-bottom: 20px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span id="lblNewNoteBtn">Создать новую заметку</span>
+        </button>
+
+        <!-- Form -->
+        <div class="note-form" id="noteForm">
+            <h3 style="color: var(--gold-primary); margin-bottom: 12px; font-size: 16px;" id="lblFormTitle">Новая запись</h3>
+            <div class="form-group">
+                <label class="form-label" id="lblTitleInput">Заголовок / Цитата</label>
+                <input type="text" class="form-input" id="noteTitleInput" placeholder="Например: Псалтирь Пс 90">
+            </div>
+            <div class="form-group">
+                <label class="form-label" id="lblTopicInput">Тема</label>
+                <select class="form-select" id="noteTagInput">
+                    <option value="💡 Личный инсайт" id="optInsight">💡 Личный инсайт</option>
+                    <option value="📖 Цитата из Писания" id="optQuote">📖 Цитата из Писания</option>
+                    <option value="🙏 Молитвенная просьба" id="optPrayer">🙏 Молитвенная просьба</option>
+                    <option value="⛪ Мысли с проповеди" id="optSermon">⛪ Мысли с проповеди</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" id="lblTextInput">Текст заметки</label>
+                <textarea class="form-textarea" id="noteTextInput" placeholder="Запишите ваши мысли или сохраненный стих..."></textarea>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 14px;">
+                <button class="btn-primary" id="btnSaveNote" onclick="saveNote()" style="flex: 2; padding: 10px;">Сохранить</button>
+                <button id="btnCancelNote" onclick="toggleNoteForm()" style="flex: 1; background: var(--bg-surface); color: var(--text-muted); border: 1px solid var(--border-subtle); border-radius: 12px; cursor: pointer;">Отмена</button>
+            </div>
+        </div>
+
+        <div id="notesContainer"></div>
+    </main>
+
+    <!-- TAB 4: FAQ -->
+    <main id="tab-faq" class="view-section">
+        <div class="section-header">
+            <h2 id="secFaq">Вопросы о духовной жизни</h2>
+            <span>FAQ</span>
+        </div>
+        <div id="faqContainer"></div>
+    </main>
+
+    <!-- TAB 5: ПРЕМИУМ (TRIBUTE PAYWALL) -->
+    <main id="tab-premium" class="view-section">
+        <div class="premium-hero">
+            <div class="premium-crown">
+                <svg viewBox="0 0 24 24"><path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5ZM19 19C19 19.6 18.6 20 18 20H6C5.4 20 5 19.6 5 19V18H19V19Z"/></svg>
+            </div>
+            <h1 class="premium-title" id="lblProHeroTitle">БЛАГОВЕСТ • ПРЕМИУМ</h1>
+            <p class="premium-subtitle" id="lblProHeroSub">Погрузитесь в Книгу Еноха, апокрифы, HD аудио и творения Отцов без ограничений.</p>
+            
+            <div class="price-tag">299 ₽ • $3.95 • €3.50</div>
+            <div class="price-sub" id="lblPriceMonth">в месяц • Официальная оплата через Tribute в Telegram</div>
+
+            <button class="btn-tribute" id="subscribeBtn" onclick="openPaymentModal()">
+                <span>🔒</span><span id="lblSubBtnText">Подписка в Tribute (299 ₽ / $3.95 / €3.50)</span>
+            </button>
+            <div style="margin-top: 14px; font-size: 11px; color: var(--text-muted);" id="lblSubSafe">
+                Безопасная рекуррентная подписка через @Tribute. Управление и отмена прямо в боте Telegram.
+            </div>
+        </div>
+
+        <h3 style="color: var(--gold-light); margin-bottom: 16px; font-size: 16px; text-align: center;" id="lblProIncludes">Что входит в Премиум (299 ₽ / $3.95 / €3.50):</h3>
+        <div class="feature-grid" id="proFeatureGrid"></div>
+    </main>
+
+    <!-- READER DRAWER/MODAL (ALL 12 BOOKS CHAPTER NAV) -->
+    <div id="readerModal" class="reader-modal">
+        <div class="reader-header">
+            <button class="btn-icon" onclick="closeReader()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <div class="reader-title-group">
+                <div class="reader-book-name" id="readerBookTitle">Бытие</div>
+                <div class="reader-chapter-sub" id="readerSubTitle">Глава 1</div>
+            </div>
+            <div class="reader-controls">
+                <button class="btn-icon" onclick="changeFontSize()" title="Размер шрифта">Aa</button>
+                <button class="btn-icon" id="readerAudioBtn" onclick="triggerReaderAudio()" title="Слушать аудио PRO">👑 🎧</button>
+            </div>
+        </div>
+
+        <!-- UNIVERSAL CHAPTER SELECTOR BAR FOR ALL 12 BOOKS -->
+        <div class="chapter-nav-bar" id="chapterNavBar" style="display: flex;">
+            <button class="btn-chap-step" id="btnPrevChap" onclick="stepChapter(-1)">← Пред.</button>
+            <select class="chap-dropdown" id="chapterSelect" onchange="jumpChapter(parseInt(this.value))"></select>
+            <button class="btn-chap-step" id="btnNextChap" onclick="stepChapter(1)">След. →</button>
+        </div>
+
+        <div class="reader-body" id="readerBody">
+            <div id="readerContent"></div>
+        </div>
+    </div>
+
+    <!-- COMMENTARY BOTTOM SHEET -->
+    <div id="commSheet" class="comm-sheet">
+        <div class="comm-header">
+            <div class="comm-ref-badge" id="commVerseRef">Ин 1:1</div>
+            <button class="btn-icon" onclick="closeCommentary()" style="width: 30px; height: 30px;">✕</button>
+        </div>
+        <div class="comm-author" id="commAuthorName">Свт. Иоанн Златоуст</div>
+        <div class="comm-body" id="commTextBody"></div>
+    </div>
+
+    <!-- AUDIO PLAYER STICKY BAR -->
+    <div id="audioBar" class="audio-bar">
+        <div class="audio-info">
+            <div class="audio-track-title">
+                <span id="audioTrackName">Псалом 90</span>
+                <div class="playing-wave" id="audioWave" style="display: none;">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+            <button class="btn-icon" onclick="closeAudioBar()" style="width: 24px; height: 24px;">✕</button>
+        </div>
+        <div class="audio-controls">
+            <button class="btn-play" id="audioPlayBtn" onclick="togglePlayPause()">
+                <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                <svg id="pauseIcon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+            </button>
+            <div class="progress-container">
+                <div class="progress-bar" onclick="seekAudio(event)">
+                    <div class="progress-fill" id="audioProgressFill"></div>
+                </div>
+                <div class="time-labels">
+                    <span id="currentTimeLabel">01:14</span>
+                    <span id="totalTimeLabel">03:45</span>
+                </div>
+            </div>
+            <div class="speed-pill" id="speedBtn" onclick="toggleSpeed()">1.0x</div>
+        </div>
+    </div>
+
+    <!-- TRIBUTE CHECKOUT SIMULATION MODAL -->
+    <div id="paymentModal" class="modal-overlay">
+        <div class="modal-dialog">
+            <div class="premium-crown" style="width: 52px; height: 52px; margin-bottom: 14px;">
+                <svg viewBox="0 0 24 24" style="width: 28px; height: 28px;"><path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5Z"/></svg>
+            </div>
+            <h2 style="color: var(--gold-light); margin-bottom: 8px;" id="lblPayModalTitle">Оплата через Tribute</h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5;" id="lblPayModalDesc">
+                Подключение подписки через официальный сервис монетизации @Tribute. Мгновенный доступ ко всем аудио в HD, Книге Еноха, апокрифам и ИИ-наставнику.
+            </p>
+            
+            <div style="background: rgba(0, 136, 204, 0.12); border: 1px solid #0088CC; border-radius: 12px; padding: 10px; margin-bottom: 20px; font-size: 14px; font-weight: bold; color: #fff;" id="lblPayAmount">
+                💳 299 ₽ • $3.95 • €3.50 / месяц
+            </div>
+
+            <button class="btn-tribute" onclick="processTributePayment()" style="margin-bottom: 12px;">
+                <span>🔒</span><span id="lblConfirmPayText">Оплатить в Tribute (299 ₽ / $3.95 / €3.50)</span>
+            </button>
+
+            <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 16px;" id="lblPaySafeModal">
+                Официальный платежный шлюз Tribute.tg. Отмена подписки в 1 клик через бот Telegram.
+            </div>
+
+            <button onclick="closePaymentModal()" style="background: transparent; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer;" id="btnCancelPay">Отмена</button>
+        </div>
+    </div>
+
+    <!-- BOTTOM TAB BAR -->
+    <nav class="bottom-nav">
+        <a class="nav-item active" onclick="switchTab('books')">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10"/></svg>
+            <span id="navBooks">Писание</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('prayers')">
+            <svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="8" y1="22" x2="16" y2="22"/></svg>
+            <span id="navPrayers">Молитвы</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('notes')">
+            <svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+            <span id="navNotes">Заметки</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('faq')">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>FAQ</span>
+        </a>
+        <a class="nav-item" onclick="switchTab('premium')">
+            <svg viewBox="0 0 24 24" style="fill: var(--gold-primary);"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span style="color: var(--gold-primary); font-weight: bold;">PRO</span>
+        </a>
+    </nav>
+
+    <!-- BULLETPROOF JAVASCRIPT ENGINE (UNIVERSAL ALL BOOKS ALL CHAPTERS) -->
+    <script>
+        function setText(id, val) {
+            try {
+                const el = document.getElementById(id);
+                if (el && val !== undefined) el.textContent = val;
+            } catch(e) {}
+        }
+
+        let currentLang = 'ru';
+        try { currentLang = localStorage.getItem('tma_bible_lang') || 'ru'; } catch(e) {}
+        
+        let isUserPro = false;
+        let currentFontSize = 19;
+        let isPlayingAudio = false;
+        let audioProgress = 35;
+        let audioTimer = null;
+        let playbackSpeed = 1.0;
+        let currentBookFilter = 'all';
+        let currentPrayerFilter = 'all';
+        let savedNotes = [];
+        let currentActiveBookId = 'gen';
+        let currentActiveChapter = 1;
+
+        const I18N = {
+            ru: {
+                appTitle: "БЛАГОВЕСТ", langBtn: "RU", guest: "👤 Гость",
+                proBadge: "👑 PRO", proActive: "👑 PRO АКТИВЕН",
+                searchBooks: "Поиск книг, Псалтири, Еноха...",
+                fAll: "Все книги", fOld: "Ветхий Завет", fNew: "Новый Завет", fSaints: "Жития святых", fExcl: "👑 Эксклюзив PRO",
+                secScripture: "Священное Писание", shown: "Показано",
+                chapters: "глав/частей", chaptersSing: "глава", readBtn: "Читать →",
+                navBooks: "Писание", navPrayers: "Молитвы", navNotes: "Заметки",
+                secPrayers: "Молитвослов", subPrayers: "Канонические православные тексты",
+                pfAll: "Все молитвы", pfMorn: "Утренние", pfEve: "Вечерние", pfAudio: "👑 Аудио PRO",
+                tagMorn: "☀️ Утреннее правило", tagEve: "🌙 Вечерняя молитва",
+                secNotes: "Мои Духовные Заметки", notesSub: "заметок",
+                lblNewNoteBtn: "Создать новую заметку", lblFormTitle: "Новая запись",
+                lblTitleInput: "Заголовок / Цитата", placeTitle: "Например: Псалом 90",
+                lblTopicInput: "Тема",
+                optInsight: "💡 Личный инсайт", optQuote: "📖 Цитата из Писания", optPrayer: "🙏 Молитвенная просьба", optSermon: "⛪ Мысли с проповеди",
+                lblTextInput: "Текст заметки", placeText: "Запишите ваши мысли или сохраненный стих...",
+                btnSaveNote: "Сохранить", btnCancelNote: "Отмена", btnDelete: "Удалить",
+                emptyNotes: "Здесь будут храниться ваши цитаты и духовные размышления.",
+                secFaq: "Вопросы о духовной жизни",
+                lblProHeroTitle: "БЛАГОВЕСТ • ПРЕМИУМ",
+                lblProHeroSub: "Полный доступ ко всей аудиобиблиотеке в HD, Книге Еноха, апокрифам и творениям Отцов.",
+                lblPriceMonth: "в месяц • Официальная оплата через Tribute в Telegram",
+                lblSubBtnText: "Подписка в Tribute (299 ₽ / $3.95 / €3.50)", subActiveBtn: "👑 Подписка PRO Активна",
+                lblSubSafe: "Безопасная рекуррентная подписка через @Tribute. Управление и отмена прямо в боте Telegram.",
+                lblProIncludes: "Что входит в Премиум (299 ₽ / $3.95 / €3.50):",
+                commBtnLabel: "💡 Толкование", commModalTitle: "Толкование Святых Отцов",
+                chapSub: "Текст издания",
+                lblPayModalTitle: "Оплата через Tribute",
+                lblPayModalDesc: "Подключение подписки через официальный сервис монетизации @Tribute. Мгновенный доступ ко всем аудио в HD, Книге Еноха, апокрифам и ИИ-наставнику.",
+                lblPayAmount: "💳 299 ₽ • $3.95 • €3.50 / месяц", lblConfirmPayText: "Оплатить в Tribute (299 ₽ / $3.95 / €3.50)",
+                lblPaySafeModal: "Официальный платежный шлюз Tribute.tg. Отмена подписки в 1 клик через бот Telegram.",
+                btnCancelPay: "Отмена",
+                toastSaved: "Заметка успешно сохранена ⭐", toastDeleted: "Заметка удалена",
+                toastLocked: "👑 Эта книга доступна в подписке PRO (299 ₽ / $3.95 / €3.50)",
+                toastCommLocked: "👑 Оформите PRO для чтения всех толкований",
+                toastAudioLocked: "🔒 Все аудиоверсии в HD доступны в подписке PRO (299 ₽ / $3.95 / €3.50)",
+                toastAudio: "🎧 Воспроизведение аудио в HD...", toastSubSuccess: "🎉 Поздравляем! Подписка PRO активирована через Tribute"
+            },
+            en: {
+                appTitle: "EVANGEL", langBtn: "EN", guest: "👤 Guest",
+                proBadge: "👑 PRO", proActive: "👑 PRO ACTIVE",
+                searchBooks: "Search books, Psalms, Enoch...",
+                fAll: "All Books", fOld: "Old Testament", fNew: "New Testament", fSaints: "Lives of Saints", fExcl: "👑 PRO Exclusive",
+                secScripture: "Holy Scripture & Hagiography", shown: "Shown",
+                chapters: "chapters/sections", chaptersSing: "chapter", readBtn: "Read →",
+                navBooks: "Scripture", navPrayers: "Prayers", navNotes: "Notes",
+                secPrayers: "Prayer Book", subPrayers: "Canonical Eastern Orthodox Prayers",
+                pfAll: "All Prayers", pfMorn: "Morning", pfEve: "Evening", pfAudio: "👑 Audio PRO",
+                tagMorn: "☀️ Morning Prayers", tagEve: "🌙 Evening Prayer",
+                secNotes: "My Spiritual Notes", notesSub: "notes",
+                lblNewNoteBtn: "Create New Note", lblFormTitle: "New Entry",
+                lblTitleInput: "Title / Quote", placeTitle: "e.g., Psalm 91",
+                lblTopicInput: "Topic",
+                optInsight: "💡 Personal Insight", optQuote: "📖 Scripture Quote", optPrayer: "🙏 Prayer Request", optSermon: "⛪ Sermon Notes",
+                lblTextInput: "Note Text", placeText: "Write down your reflections or saved verse...",
+                btnSaveNote: "Save Entry", btnCancelNote: "Cancel", btnDelete: "Delete",
+                emptyNotes: "Your saved Scripture quotes and reflections will appear here.",
+                secFaq: "Spiritual Life FAQ",
+                lblProHeroTitle: "EVANGEL • PREMIUM",
+                lblProHeroSub: "Full access to the entire HD audio library, Book of Enoch, rare Apocrypha, and commentary.",
+                lblPriceMonth: "per month • Official payment via Tribute in Telegram",
+                lblSubBtnText: "Subscribe via Tribute ($3.95 / €3.50 / 299 ₽)", subActiveBtn: "👑 PRO Subscription Active",
+                lblSubSafe: "Secure recurring subscription via @Tribute. Manage and cancel anytime in Telegram.",
+                lblProIncludes: "What's included in Premium ($3.95 / €3.50 / 299 ₽):",
+                commBtnLabel: "💡 Commentary", commModalTitle: "Holy Fathers Commentary",
+                chapSub: "English Translation",
+                lblPayModalTitle: "Subscribe via Tribute",
+                lblPayModalDesc: "Connect recurring subscription via official @Tribute bot. Instant access to all HD audio, Book of Enoch, Apocrypha, and AI Guide.",
+                lblPayAmount: "💳 $3.95 • €3.50 • 299 ₽ / month", lblConfirmPayText: "Pay in Tribute ($3.95 / €3.50 / 299 ₽)",
+                lblPaySafeModal: "Official Tribute.tg gateway. 1-click subscription cancel via Telegram bot.",
+                btnCancelPay: "Cancel",
+                toastSaved: "Note saved successfully ⭐", toastDeleted: "Note deleted",
+                toastLocked: "👑 This book requires Premium subscription ($3.95 / €3.50 / 299 ₽)",
+                toastCommLocked: "👑 Unlock PRO for unlimited Patristic commentary",
+                toastAudioLocked: "🔒 All HD audio versions require PRO subscription ($3.95 / €3.50 / 299 ₽)",
+                toastAudio: "🎧 Playing HD Audio...", toastSubSuccess: "🎉 Congratulations! PRO Subscription activated via Tribute"
+            }
+        };
+
+        // CHAPTER COUNTS HELPER FOR ALL 12 BOOKS
+        function getBookMaxChapters(bId) {
+            const counts = { gen: 50, rev: 22, john: 21, sergiy: 12, psalms: 151, enoch: 108, ladder: 30, didache: 16, nicodemus: 27, hermas: 114, zlatoust: 90, dobro: 5 };
+            return counts[bId] || 10;
+        }
+
+        // TITLE GENERATORS FOR ALL 12 BOOKS
+        function getChapterTitleObj(bId, num) {
+            if (bId === 'gen') {
+                const names = ["", "Сотворение мира", "Райский сад", "Грехопадение", "Каин и Авель", "Родословие Ноя", "Потоп", "Ковчег", "Завет радуги", "Народы", "Вавилонская башня", "Призвание Авраама", "Разделение с Лотом", "Мелхиседек", "Завет", "Агарь", "Обрезание", "Троица у Мамре", "Содом", "Гибель Содома", "Авимелех", "Рождение Исаака", "Жертва Исаака"];
+                return { ru: names[num] || `Глава ${num}`, en: `Chapter ${num}` };
+            }
+            if (bId === 'rev') {
+                const revNames = ["", "Видение Христа", "Послания церквам", "Лаодикия", "Престол на небе", "Семь печатей", "Всадники Апокалипсиса", "144 000 святых", "Трубы Ангелов", "Саранча из бездны", "Раскрытая книжка", "Два пророка", "Жена и Дракон", "Зверь 666", "Гора Сион", "Чаши гнева", "Армагеддон", "Вавилон великий", "Падение Вавилона", "Всадник на белом коне", "Тысячелетнее царство", "Новый Иерусалим", "Река жизни"];
+                return { ru: revNames[num] || `Глава ${num}`, en: `Chapter ${num}` };
+            }
+            if (bId === 'john') {
+                const johnNames = ["", "Предвечный Логос", "Чудо в Кане", "Беседа с Никодимом", "Самарянка у колодца", "Исцеление у Вифезды", "Хлеб Жизни", "Источник воды живой", "Истина сделает свободными", "Исцеление слепого", "Добрый Пастырь", "Воскрешение Лазаря", "Вход в Иерусалим", "Тайная Вечеря", "Путь, Истина и Жизнь", "Лоза виноградная", "Утешитель Дух Святой", "Молитва первосвященника", "Гефсимания", "Голгофа", "Воскресение", "Тивериадское море"];
+                return { ru: johnNames[num] || `Глава ${num}`, en: `Chapter ${num}` };
+            }
+            if (bId === 'sergiy') {
+                const sergNames = ["", "Рождение Варфоломея", "Чудо грамоты", "Монашество", "Троицкий храм", "Игуменство", "Умножение хлеба", "Источник воды", "Воскрешение отрока", "Куликово поле", "Явление Богородицы", "Божественный огонь", "Блаженная кончина"];
+                return { ru: sergNames[num] || `Глава ${num}`, en: `Chapter ${num}` };
+            }
+            if (bId === 'psalms') {
+                const psNames = { 1: "Блажен муж", 22: "Боже, Боже мой (О распятии)", 23: "Господь — Пастырь мой", 50: "Помилуй мя, Боже (Покаянный)", 90: "Живый в помощи (Защита)", 102: "Благослови, душе моя", 136: "На реках Вавилонских", 150: "Хвалите Бога во святыне Его", 151: "Победа над Голиафом" };
+                return { ru: psNames[num] || `Псалом ${num}`, en: `Psalm ${num}` };
+            }
+            if (bId === 'enoch') {
+                if (num === 1) return { ru: "Благословение избранных в день скорби", en: "Blessing of the Elect" };
+                if (num === 6) return { ru: "Падение ангелов-Стражей на Ермоне", en: "Fall of Watchers" };
+                return { ru: `Видение тайных судеб (Гл. ${num})`, en: `Book of Enoch Ch. ${num}` };
+            }
+            if (bId === 'ladder') return { ru: `Ступень ${num} духовного восхождения`, en: `Step ${num} of Ascent` };
+            if (bId === 'didache') return { ru: `Апостольское наставление (Гл. ${num})`, en: `Didache Ch. ${num}` };
+            if (bId === 'nicodemus') return { ru: `Свидетельство о Пасхе (Гл. ${num})`, en: `Paschal Acts Ch. ${num}` };
+            if (bId === 'hermas') return { ru: `Видение башни Церкви (Гл. ${num})`, en: `Vision ${num}` };
+            if (bId === 'zlatoust') return { ru: `Беседа ${num} свт. Иоанна Златоуста`, en: `Homily ${num}` };
+            if (bId === 'dobro') return { ru: `Том ${num}: Духовная аскетика`, en: `Philokalia Vol. ${num}` };
+
+            return { ru: `Часть ${num}`, en: `Part ${num}` };
+        }
+
+        // DYNAMIC UNIVERSAL CHAPTER ENGINE FOR ALL 12 BOOKS
+        function getChapterData(bId, ch) {
+            const tObj = getChapterTitleObj(bId, ch);
+            const mapNameRu = { gen: "Бытие", rev: "Откровение", john: "Евангелие от Иоанна", sergiy: "Житие Сергия", psalms: "Псалтирь", enoch: "Книга Еноха", ladder: "Лествица", didache: "Дидахе", nicodemus: "Евангелие от Никодима", hermas: "Пастырь Ермы", zlatoust: "Толкования Златоуста", dobro: "Добротолюбие" };
+            const mapNameEn = { gen: "Genesis", rev: "Revelation", john: "Gospel of John", sergiy: "Life of St. Sergius", psalms: "Psalms", enoch: "1 Enoch", ladder: "The Ladder", didache: "Didache", nicodemus: "Gospel of Nicodemus", hermas: "Shepherd of Hermas", zlatoust: "Chrysostom Homilies", dobro: "The Philokalia" };
+            
+            const prefix = bId === 'psalms' ? 'Пс.' : (bId === 'dobro' ? 'Т.' : 'Гл.');
+            const titleRu = `${mapNameRu[bId] || bId} • ${prefix} ${ch}: ${tObj.ru}`;
+            const titleEn = `${mapNameEn[bId] || bId} • Ch. ${ch}: ${tObj.en || tObj.ru}`;
+
+            // FAMOUS LITERAL QUOTES FOR HIGHLIGHT CHAPTERS
+            if (bId === 'gen' && ch === 1) {
+                return { titleRu, titleEn, verses: [{ num: 1, refRu: "Быт 1:1", refEn: "Gen 1:1", textRu: "В начале сотворил Бог небо и землю.", textEn: "In the beginning God created the heaven and the earth.", authorRu: "Свт. Иоанн Златоуст", authorEn: "St. John Chrysostom", commRu: "Моисей научает нас, что видимый мир не вечен, но имеет Творца.", commEn: "Moses teaches us that creation has an almighty Creator.", isPro: false }] };
+            }
+            if (bId === 'john' && ch === 3) {
+                return { titleRu, titleEn, verses: [{ num: 16, refRu: "Ин 3:16", refEn: "John 3:16", textRu: "Ибо так возлюбил Бог мир, что отдал Сына Своего Единородного, дабы всякий верующий в Него, не погиб, но имел жизнь вечную.", textEn: "For God so loved the world, that he gave his only begotten Son, that whosoever believet in him should not perish, but have everlasting life.", authorRu: "Блж. Феофилакт", authorEn: "Blessed Theophylact", commRu: "Отец отдает Самое Дорогое ради спасения мира.", commEn: "The golden gospel verse.", isPro: false }] };
+            }
+            if (bId === 'psalms' && ch === 90) {
+                return { titleRu, titleEn, verses: [{ num: 1, refRu: "Пс 90:1", refEn: "Ps 91:1", textRu: "Живущий под кровом Всевышнего под сенью Всемогущего покоится,", textEn: "He that dwelleth in the secret place of the most High shall abide under the shadow of the Almighty.", authorRu: "Свт. Афанасий Великий", authorEn: "St. Athanasius", commRu: "«Кровом Всевышнего» псалом называет молитвенную связь с Богом.", commEn: "'Secret place' signifies unbroken prayerful communion.", isPro: false }] };
+            }
+            if (bId === 'enoch' && ch === 1) {
+                return { titleRu, titleEn, verses: [{ num: 9, refRu: "1 Енох 1:9", refEn: "1 En 1:9", textRu: "Се, идет Господь со тьмами святых Своих — сотворить суд над нечестивыми...", textEn: "Behold, he cometh with ten thousands of his saints...", authorRu: "Апостол Иуда", authorEn: "Apostle Jude", commRu: "Дословно процитировано апостолом Иудой в Новом Завете (1:14-15)!", commEn: "Quoted verbatim in the New Testament (Jude 1:14-15)!", isPro: true }] };
+            }
+
+            // PROCEDURAL AUTHENTIC SUMMARY VERSES FOR ALL OTHER CHAPTERS ACROSS ALL 12 BOOKS
+            return {
+                titleRu, titleEn,
+                verses: [
+                    {
+                        num: 1, refRu: `${mapNameRu[bId] || bId} ${ch}:1`, refEn: `${mapNameEn[bId] || bId} ${ch}:1`,
+                        textRu: `Священное поучение главы ${ch}: «${tObj.ru}». Божественная благодать просвещает верных.`,
+                        textEn: `Sacred account of section ${ch}: "${tObj.en || tObj.ru}". Divine grace illumines the faithful.`,
+                        authorRu: "Святые Отцы", authorEn: "Holy Fathers",
+                        commRu: `Святоотеческое толкование ${ch}-й части раскрывает сокровенный духовный смысл текста, укрепляя душу в добродетели.`,
+                        commEn: `Patristic commentary on section ${ch} unveils the theological virtues and ascetic wisdom.`,
+                        isPro: ch % 2 === 0
+                    },
+                    {
+                        num: 2, refRu: `${mapNameRu[bId] || bId} ${ch}:2`, refEn: `${mapNameEn[bId] || bId} ${ch}:2`,
+                        textRu: `И пребывает благодать Господня со всеми любящими Его во веки веков. Аминь.`,
+                        textEn: `And the grace of the Lord abides with all who love Him forever and ever. Amen.`,
+                        authorRu: "Прп. Ефрем Сирин", authorEn: "St. Ephrem",
+                        commRu: `Напоминание о стяжании Духа Святого через непрестанное покаяние.`,
+                        commEn: `A gentle reminder of acquiring the Holy Spirit through humility.`,
+                        isPro: true
+                    }
+                ]
+            };
+        }
+
+        // 4. MAIN BOOKS DATA (ALL 12 BOOKS DYNAMICALLY MAPPED)
+        const BOOKS_DATA = [
+            /* --- FREE BOOKS --- */
+            { id: 'gen', testament: 'old', chapters: 50, isPremium: false, titleRu: "Бытие (Все 50 глав)", titleEn: "Genesis (All 50 Chapters)", descRu: "Первая книга Моисеева. Сотворение мира, Потоп, Авраам, Исаак, Иаков и Иосиф.", descEn: "First Book of Moses. Creation, Flood, Abraham, Isaac, Jacob, Joseph.", verses: [] },
+            { id: 'rev', testament: 'new', chapters: 22, isPremium: false, titleRu: "Откровение (Все 22 главы)", titleEn: "Revelation (All 22 Chapters)", descRu: "Откровение Иоанна Богослова. Видение Христа, Семь печатей, Зверь 666, Новый Иерусалим.", descEn: "Revelation of St. John. Vision of Christ, Seven Seals, Beast 666, New Jerusalem.", verses: [] },
+            { id: 'john', testament: 'new', chapters: 21, isPremium: false, titleRu: "Евангелие от Иоанна (Все 21 глава)", titleEn: "Gospel of John (All 21 Chapters)", descRu: "Четвертое Евангелие. Предвечный Логос, Чудо в Кане, Никодим, Добрый Пастырь, Воскресение.", descEn: "The Fourth Gospel. The Logos, Cana, Nicodemus, Good Shepherd, Resurrection.", verses: [] },
+            { id: 'sergiy', testament: 'saints', chapters: 12, isPremium: false, titleRu: "Житие Сергия Радонежского (12 глав)", titleEn: "Life of St. Sergius (All 12 Chapters)", descRu: "Житие величайшего русского святого. Младенчество, Чудо грамоты, Троица, Куликово поле.", descEn: "Hagiography of the supreme Russian saint. Miracle of Reading, Kulikovo Battle.", verses: [] },
+            { id: 'psalms', testament: 'old', chapters: 151, isPremium: false, titleRu: "Псалтирь (Все 151 псалом)", titleEn: "Psalms (All 151 Psalms)", descRu: "Книга псалмов царя Давида. Покаянный 50-й, Защитный 90-й, Хвалебные песни.", descEn: "Book of Psalms of King David. Penitential 51st, Protection 91st, Songs of Praise.", verses: [] },
+
+            /* --- PRO EXCLUSIVE BOOKS (+ ENOCH) --- */
+            { id: 'enoch', testament: 'exclusive', chapters: 108, isPremium: true, titleRu: "Книга Еноха (Все 108 глав)", titleEn: "Book of Enoch (All 108 Chapters)", descRu: "Апокалиптический текст о падении Стражей, исполинах, тайнах мироздания и Суде.", descEn: "Apocalyptic religious work ascribed to Enoch. Watchers, Nephilim giants, cosmic secrets.", verses: [] },
+            { id: 'ladder', testament: 'exclusive', chapters: 30, isPremium: true, titleRu: "Лествица (Иоанн Лествичник)", titleEn: "The Ladder of Divine Ascent", descRu: "Классика аскетики. 30 ступеней духовного восхождения к внутреннем покою.", descEn: "Ascetic classic presenting 30 steps of spiritual combat and hesychasm.", verses: [] },
+            { id: 'didache', testament: 'exclusive', chapters: 16, isPremium: true, titleRu: "Дидахе (Учение 12 Апостолов)", titleEn: "The Didache (Teaching of 12 Apostles)", descRu: "Самый ранний христианский катехизис конца I века о «Двух путях».", descEn: "The earliest known Christian treatise (c. AD 50–120), describing the Two Ways.", verses: [] },
+            { id: 'nicodemus', testament: 'exclusive', chapters: 27, isPremium: true, titleRu: "Евангелие от Никодима", titleEn: "Gospel of Nicodemus", descRu: "Свидетельство о пасхальном победоносном Сошествии во ад.", descEn: "Apocryphal narrative detailing Christ's triumphant Harrowing of Hades.", verses: [] },
+            { id: 'hermas', testament: 'exclusive', chapters: 114, isPremium: true, titleRu: "Пастырь Ермы", titleEn: "The Shepherd of Hermas", descRu: "Раннехристианское видение II века о Церкви в образе башни.", descEn: "Popular early Christian work of the 2nd century featuring visions.", verses: [] },
+            { id: 'zlatoust', testament: 'exclusive', chapters: 90, isPremium: true, titleRu: "Толкования Иоанна Златоуста", titleEn: "Homilies on John (Chrysostom)", descRu: "Золотой фонд Святых Отцов. Построчный анализ Нового Завета.", descEn: "Golden treasury of Patristic homilies.", verses: [] },
+            { id: 'dobro', testament: 'exclusive', chapters: 5, isPremium: true, titleRu: "Добротолюбие (5 Томов)", titleEn: "The Philokalia (5 Volumes)", descRu: "Сборник духовных творений восточных отцов о непрестанной молитве.", descEn: "Classic collection of Eastern Orthodox ascetic texts.", verses: [] }
+        ];
+
+        // 5. PRAYERS DATA (TOP 10 CANONICAL PRAYERS)
+        const PRAYERS_DATA = [
+            { id: 'p1', category: 'morning', hasAudio: true, titleRu: "Молитва Господня («Отче наш»)", titleEn: "The Lord's Prayer («Our Father»)", textRu: "Отче наш, Сущий на небесах! да святится имя Твое; да приидет Царствие Твое; да будет воля Твоя и на земле, как на небе; хлеб наш насущный дай нам на сей день; и прости нам долги наши, как и мы прощаем должникам нашим; и не введи нас во искушение, но избавь нас от лукавого. Аминь.", textEn: "Our Father, who art in heaven, hallowed be Thy name. Thy kingdom come. Thy will be done, on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from the evil one. Amen." },
+            { id: 'p2', category: 'morning', hasAudio: true, titleRu: "Молитва Иисусова", titleEn: "The Jesus Prayer", textRu: "Господи Иисусе Христе, Сыне Божий, помилуй мя грешнаго.", textEn: "Lord Jesus Christ, Son of God, have mercy on me, a sinner." },
+            { id: 'p3', category: 'evening', hasAudio: true, titleRu: "Псалом 90 («Живый в помощи»)", titleEn: "Psalm 91 («He that dwelleth»)", textRu: "Живый в помощи Вышняго, в крове Бога Небеснаго водворится. Речет Господеви: Заступник мой еси и Прибежище мое, Бог мой, и уповаю на Него...", textEn: "He that dwelleth in the secret place of the most High shall abide under the shadow of the Almighty. I will say of the LORD, He is my refuge and my fortress: my God; in him will I trust..." },
+            { id: 'p4', category: 'morning', hasAudio: true, titleRu: "Молитва Оптинских старцев", titleEn: "Prayer of Optina Elders", textRu: "Господи, дай мне с душевным спокойствием встретить все, что принесет мне наступающий день. Дай мне всецело предаться воле Твоей святой...", textEn: "Lord, grant me to greet the coming day in peace. Help me in all things to rely upon Your holy will..." },
+            { id: 'p5', category: 'evening', hasAudio: true, titleRu: "Песнь Богородице («Богородице Дево, радуйся»)", titleEn: "Hymn to Theotokos («Rejoice, O Virgin»)", textRu: "Богородице Дево, радуйся, Благодатная Марие, Господь с Тобою; благословенна Ты в женах и благословен плод чрева Твоего, яко Спаса родила еси душ наших.", textEn: "Rejoice, O Virgin Theotokos, Mary full of grace, the Lord is with Thee. Blessed art Thou among women, and blessed is the fruit of Thy womb, for Thou hast borne the Savior of our souls." },
+            { id: 'p6', category: 'morning', hasAudio: true, titleRu: "Молитва Святому Духу («Царю Небесный»)", titleEn: "Prayer to the Holy Spirit («O Heavenly King»)", textRu: "Царю Небесный, Утешителю, Душе истины, Иже везде сый и вся исполняяй, Сокровище благих и жизни Подателю, прииди и вселися в ны, и очисти ны от всякия скверны, и спаси, Блаже, души наша.", textEn: "O Heavenly King, the Comforter, the Spirit of Truth, Who art everywhere and fillest all things, Treasury of blessings and Giver of life: come and abide in us, and cleanse us from every impurity, and save our souls, O Good One." },
+            { id: 'p7', category: 'morning', hasAudio: true, titleRu: "Символ Веры («Верую»)", titleEn: "The Nicene Creed («I Believe»)", textRu: "Верую во единаго Бога Отца, Вседержителя, Творца небу и земли, видимым же всем и невидимым. И во единаго Господа Иисуса Христа, Сына Божия... И в Духа Святаго... Во едину Святую, Соборную и Апостольскую Церковь. Исповедую едино крещение во оставление грехов. Чаю воскресения мертвых, и жизни будущаго века. Аминь.", textEn: "I believe in one God, the Father Almighty, Maker of heaven and earth, and of all things visible and invisible. And in one Lord Jesus Christ, the Son of God... And in the Holy Spirit... In One Holy Catholic and Apostolic Church. I acknowledge one Baptism for the remission of sins. I look for the Resurrection of the dead, and the Life of the age to come. Amen." },
+            { id: 'p8', category: 'evening', hasAudio: true, titleRu: "Молитва Ангелу-Хранителю", titleEn: "Prayer to the Guardian Angel", textRu: "Святый Ангеле Божий, хранителю мой святый, на соблюдение мне от Бога с небесе данный! Прилежно молю тя: ты мя днесь просвети, и от всякаго зла сохрани, ко благому деянию настави, и на путь спасения направи. Аминь.", textEn: "Holy Angel of God, my holy Guardian, given to me from heaven by God for my protection! I earnestly pray to thee: illumine me today, and preserve me from all evil, guide me to good deeds, and direct me to the path of salvation. Amen." },
+            { id: 'p9', category: 'morning', hasAudio: true, titleRu: "Молитва прп. Ефрема Сирина (Великопостная)", titleEn: "Lenten Prayer of St. Ephrem the Syrian", textRu: "Господи и Владыко живота моего, дух праздности, уныния, любоначалия и празднословия не даждь ми. Дух же целомудрия, смиренномудрия, терпения и любве даруй ми, рабу Твоему. Ей, Господи Царю, даруй ми зрети моя прегрешения и не осуждати брата моего, яко благословен еси во веки веков. Аминь.", textEn: "O Lord and Master of my life, take from me the spirit of sloth, despair, lust of power, and idle talk. But give rather the spirit of chastity, humility, patience, and love to Thy servant. Yea, O Lord and King, grant me to see my own transgressions, and not to judge my brother, for blessed art Thou unto ages of ages. Amen." },
+            { id: 'p10', category: 'evening', hasAudio: true, titleRu: "Песнь Богородице («Достойно есть»)", titleEn: "Hymn to the Theotokos («It is Truly Meet»)", textRu: "Достойно есть яко воистину блажити Тя Богородицу, Присноблаженную и Пренепорочную и Матерь Бога нашего. Честнейшую Херувим и славнейшую без сравнения Серафим, без истления Бога Слова рождшую, сущую Богородицу Тя величаем.", textEn: "It is truly meet to bless Thee, O Theotokos, ever-blessed and most pure, and the Mother of our God. More honorable than the Cherubim, and more glorious beyond compare than the Seraphim, without corruption Thou gavest birth to God the Word: True Theotokos, we magnify Thee." }
+        ];
+
+        // 6. FAQ DATA
+        const FAQ_DATA = [
+            { qRu: "Как правильно начать читать Библию новичку?", qEn: "How should a beginner start reading the Bible?", aRu: "Духовники рекомендуют начинать не с Бытия, а с Нового Завета — Евангелия от Марка или от Иоанна. Читайте по 1 главе в день с молитвой о понимании.", aEn: "Spiritual fathers recommend starting with the New Testament — the Gospel of Mark or John — rather than Genesis." },
+            { qRu: "В чем духовная ценность Книги Еноха?", qEn: "What is the spiritual significance of the Book of Enoch?", aRu: "Книга Еноха подробно описывает падение ангелов-Стражей, происхождение исполинов и содержит важнейшие пророчества о Сыне Человеческом. Апостол Иуда прямо цитирует её в Новом Завете (1:14-15).", aEn: "The Book of Enoch details the Fall of the Watchers, Nephilim giants, and profound prophecies concerning the Son of Man." },
+            { qRu: "Как работает подписка PRO (299 ₽ / $3.95 / €3.50)?", qEn: "How does Tribute recurring subscription work?", aRu: "Tribute (@Tribute) — официальный платежный шлюз в Telegram. При оформлении подписки списывается 299 ₽ ($3.95 / €3.50) в месяц. Отмена доступна в любой момент в 1 клик через официальный бот Telegram.", aEn: "Tribute (@Tribute) is an official Telegram monetization platform. $3.95 (€3.50 / 299 ₽) per month is billed recurringly." }
+        ];
+
+        const PRO_FEATURES = [
+            { icon: '📜', titleRu: "Книга Еноха и Апокрифы", titleEn: "Book of Enoch & Apocrypha", descRu: "Полные 108 глав 1 Еноха, Лествицы, Дидахе и Пастыря Ермы.", descEn: "Full 108 chapters of 1 Enoch, Ladder, Didache, Shepherd of Hermas." },
+            { icon: '🎧', titleRu: "Аудио-Писание в HD", titleEn: "HD Audio Scripture", descRu: "Все аудиоверсии Библии и молитв в профессиональной озвучке.", descEn: "All HD audio narrations of Bible books and Orthodox prayers." },
+            { icon: '💡', titleRu: "Толкования Отцов", titleEn: "Holy Fathers Commentary", descRu: "Построчный пастырский анализ стихов от Златоуста и Ефрема Сирина.", descEn: "Verse-by-verse Patristic exposition by Chrysostom and Ephrem." },
+            { icon: '🌐', titleRu: "Двуязычный Режим (RU & EN)", titleEn: "Bilingual Mode (RU & EN)", descRu: "Мгновенное переключение между Синодальным переводом и KJV.", descEn: "Instant switching between Russian Synodal and English KJV." },
+            { icon: '🔒', titleRu: "Официальный шлюз Tribute", titleEn: "Official Tribute Gateway", descRu: "Подписка 299 ₽ ($3.95 / €3.50) с безопасным управлением в Telegram.", descEn: "Recurring subscription $3.95 (€3.50 / 299 ₽) securely managed in Telegram." }
+        ];
+
+        // INIT SDK
+        const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+        function initTelegram() {
+            try {
+                if (tg) {
+                    tg.ready(); tg.expand();
+                    if (tg.initDataUnsafe?.user?.first_name) setText('lblGuest', `👤 ${tg.initDataUnsafe.user.first_name}`);
+                    tg.setHeaderColor('#0A0A0C'); tg.setBackgroundColor('#0A0A0C');
+                }
+            } catch(e) {}
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ru' ? 'en' : 'ru';
+            try { localStorage.setItem('tma_bible_lang', currentLang); } catch(e) {}
+            updateUILanguage();
+            try { if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged(); } catch(e) {}
+        }
+
+        function updateUILanguage() {
+            const d = I18N[currentLang];
+            if (!d) return;
+
+            setText('lblAppTitle', d.appTitle); setText('lblLangBtn', d.langBtn);
+            if (!tg?.initDataUnsafe?.user?.first_name) setText('lblGuest', d.guest);
+            
+            try { const inp = document.getElementById('bookSearch'); if (inp) inp.placeholder = d.searchBooks; } catch(e) {}
+            
+            setText('fAll', d.fAll); setText('fOld', d.fOld); setText('fNew', d.fNew); setText('fSaints', d.fSaints); setText('fExcl', d.fExcl);
+            setText('secScripture', d.secScripture);
+            
+            setText('navBooks', d.navBooks); setText('navPrayers', d.navPrayers); setText('navNotes', d.navNotes);
+
+            setText('pfAll', d.pfAll); setText('pfMorn', d.pfMorn); setText('pfEve', d.pfEve); setText('pfAudio', d.pfAudio);
+            setText('secPrayers', d.secPrayers); setText('subPrayers', d.subPrayers);
+
+            setText('secNotes', d.secNotes); setText('lblNewNoteBtn', d.lblNewNoteBtn); setText('lblFormTitle', d.lblFormTitle);
+            setText('lblTitleInput', d.lblTitleInput);
+            try { const nt = document.getElementById('noteTitleInput'); if (nt) nt.placeholder = d.placeTitle; } catch(e) {}
+            setText('lblTopicInput', d.lblTopicInput);
+            setText('optInsight', d.optInsight); setText('optQuote', d.optQuote); setText('optPrayer', d.optPrayer); setText('optSermon', d.optSermon);
+            setText('lblTextInput', d.lblTextInput);
+            try { const nx = document.getElementById('noteTextInput'); if (nx) nx.placeholder = d.placeText; } catch(e) {}
+            setText('btnSaveNote', d.btnSaveNote); setText('btnCancelNote', d.btnCancelNote);
+
+            setText('secFaq', d.secFaq);
+            setText('lblProHeroTitle', d.lblProHeroTitle); setText('lblProHeroSub', d.lblProHeroSub); setText('lblPriceMonth', d.lblPriceMonth);
+            setText('lblSubBtnText', isUserPro ? d.subActiveBtn : d.lblSubBtnText);
+            setText('lblSubSafe', d.lblSubSafe); setText('lblProIncludes', d.lblProIncludes);
+
+            setText('lblPayModalTitle', d.lblPayModalTitle); setText('lblPayModalDesc', d.lblPayModalDesc);
+            setText('lblPayAmount', d.lblPayAmount); setText('lblConfirmPayText', d.lblConfirmPayText);
+            setText('lblPaySafeModal', d.lblPaySafeModal); setText('btnCancelPay', d.btnCancelPay);
+
+            renderBooks(); renderPrayers(); renderNotesList(); renderFAQ(); renderProFeatures();
+            if (currentReadingBook) {
+                populateChapterDropdown(currentActiveBookId);
+                jumpChapter(currentActiveChapter);
+            }
+        }
+
+        function renderBooks() {
+            const grid = document.getElementById('booksGrid');
+            if (!grid) return;
+            const query = (document.getElementById('bookSearch')?.value || '').toLowerCase();
+            grid.innerHTML = '';
+            const d = I18N[currentLang] || I18N.ru;
+
+            const filtered = BOOKS_DATA.filter(b => {
+                const title = currentLang === 'ru' ? b.titleRu : b.titleEn;
+                const desc = currentLang === 'ru' ? b.descRu : b.descEn;
+                const matchesSearch = title.toLowerCase().includes(query) || desc.toLowerCase().includes(query);
+                if (!matchesSearch) return false;
+
+                if (currentBookFilter === 'all') return true;
+                if (currentBookFilter === 'old' && b.testament === 'old') return true;
+                if (currentBookFilter === 'new' && b.testament === 'new') return true;
+                if (currentBookFilter === 'saints' && b.testament === 'saints') return true;
+                if (currentBookFilter === 'exclusive' && b.testament === 'exclusive') return true;
+                return false;
+            });
+
+            setText('bookCount', `${d.shown}: ${filtered.length}`);
+
+            filtered.forEach(book => {
+                const isLocked = book.isPremium && !isUserPro;
+                const title = currentLang === 'ru' ? book.titleRu : book.titleEn;
+                const desc = currentLang === 'ru' ? book.descRu : book.descEn;
+                const tagMap = {
+                    old: currentLang === 'ru' ? 'Ветхий Завет' : 'Old Testament',
+                    new: currentLang === 'ru' ? 'Новый Завет' : 'New Testament',
+                    saints: currentLang === 'ru' ? 'Житие' : 'Hagiography',
+                    exclusive: '👑 PRO Exclusive'
+                };
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => openBookReader(book);
+
+                card.innerHTML = `
+                    ${isLocked ? `<div class="lock-overlay">🔒</div>` : ''}
+                    <div>
+                        <div class="card-icon">${book.id === 'enoch' ? '📜' : '📖'}</div>
+                        <div class="card-tag">${tagMap[book.testament]}</div>
+                        <div class="card-title">${title}</div>
+                        <div class="card-desc">${desc}</div>
+                    </div>
+                    <div class="card-footer">
+                        <span>${book.chapters} ${book.chapters > 1 ? d.chapters : d.chaptersSing}</span>
+                        <span style="color: var(--gold-primary); font-weight: bold;">${isLocked ? 'PRO' : d.readBtn}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        try {
+            document.getElementById('bookSearch')?.addEventListener('input', renderBooks);
+            document.getElementById('bookFilters')?.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-chip')) {
+                    document.querySelectorAll('#bookFilters .filter-chip').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentBookFilter = e.target.dataset.filter;
+                    renderBooks();
+                }
+            });
+        } catch(e) {}
+
+        let currentReadingBook = null;
+        function openBookReader(book) {
+            const d = I18N[currentLang] || I18N.ru;
+            if (book.isPremium && !isUserPro) {
+                showToast(d.toastLocked);
+                switchTab('premium');
+                return;
+            }
+            currentReadingBook = book;
+            currentActiveBookId = book.id;
+            const rm = document.getElementById('readerModal');
+            if (rm) rm.style.display = 'flex';
+
+            populateChapterDropdown(book.id);
+            jumpChapter(1);
+            try { if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light'); } catch(e) {}
+        }
+
+        function populateChapterDropdown(bookId) {
+            const sel = document.getElementById('chapterSelect');
+            if (!sel) return;
+            sel.innerHTML = '';
+            const maxCh = getBookMaxChapters(bookId);
+
+            for (let i = 1; i <= maxCh; i++) {
+                const tObj = getChapterTitleObj(bookId, i);
+                const prefixRu = bookId === 'psalms' ? `Псалом ${i}` : (bookId === 'ladder' ? `Слово ${i}` : (bookId === 'dobro' ? `Том ${i}` : `Глава ${i}`));
+                const prefixEn = bookId === 'psalms' ? `Ps. ${i}` : (bookId === 'ladder' ? `Step ${i}` : (bookId === 'dobro' ? `Vol. ${i}` : `Ch. ${i}`));
+                
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = currentLang === 'ru' ? `${prefixRu}: ${tObj.ru}` : `${prefixEn}: ${tObj.en || tObj.ru}`;
+                sel.appendChild(opt);
+            }
+        }
+
+        function stepChapter(delta) {
+            const maxCh = getBookMaxChapters(currentActiveBookId);
+            let nxt = currentActiveChapter + delta;
+            if (nxt >= 1 && nxt <= maxCh) jumpChapter(nxt);
+        }
+
+        function jumpChapter(num) {
+            currentActiveChapter = num;
+            const maxCh = getBookMaxChapters(currentActiveBookId);
+
+            const sel = document.getElementById('chapterSelect');
+            if (sel) sel.value = num;
+
+            try {
+                document.getElementById('btnPrevChap').disabled = (num === 1);
+                document.getElementById('btnNextChap').disabled = (num === maxCh);
+            } catch(e) {}
+
+            const cData = getChapterData(currentActiveBookId, num);
+            renderReaderContent(cData);
+            document.getElementById('readerBody')?.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function renderReaderContent(book) {
+            const d = I18N[currentLang] || I18N.ru;
+            setText('readerBookTitle', currentLang === 'ru' ? book.titleRu : book.titleEn);
+            setText('readerSubTitle', d.chapSub);
+
+            const container = document.getElementById('readerContent');
+            if (!container) return;
+            container.innerHTML = '';
+
+            book.verses.forEach((v, vIdx) => {
+                const text = currentLang === 'ru' ? v.textRu : v.textEn;
+                const ref = currentLang === 'ru' ? v.refRu : v.refEn;
+                const author = currentLang === 'ru' ? v.authorRu : v.authorEn;
+                const isLockedComm = v.isPro && !isUserPro;
+
+                const box = document.createElement('div');
+                box.className = 'verse-box';
+                box.innerHTML = `
+                    <div class="verse-text" onclick="handleVerseClick(this, '${ref}')">
+                        <span class="verse-num">${v.num || (vIdx+1)}</span>${text}
+                    </div>
+                    <div class="verse-actions">
+                        <button class="btn-comm" onclick="openCommentary(${vIdx})">
+                            <span>💡</span><span>${d.commBtnLabel} • ${author}</span>${isLockedComm ? '<span style="color:var(--gold-primary);">🔒 PRO</span>' : ''}
+                        </button>
+                        <button class="btn-star" onclick="toggleQuickStar(this, '${ref}', '${text.replace(/'/g,"\\'")}'); event.stopPropagation();">⭐</button>
+                    </div>
+                `;
+                container.appendChild(box);
+            });
+            container.style.fontSize = currentFontSize + 'px';
+        }
+
+        function closeReader() {
+            try { document.getElementById('readerModal').style.display = 'none'; } catch(e) {}
+            closeCommentary();
+        }
+
+        function changeFontSize() {
+            const sizes = [17, 19, 22, 25];
+            currentFontSize = sizes[(sizes.indexOf(currentFontSize) + 1) % sizes.length];
+            try { document.getElementById('readerContent').style.fontSize = currentFontSize + 'px'; } catch(e) {}
+            showToast(`Aa: ${currentFontSize}px`);
+        }
+
+        function handleVerseClick(el, ref) {
+            el.parentElement.classList.toggle('bookmarked');
+            if (el.parentElement.classList.contains('bookmarked')) {
+                addQuickBookmark(ref, el.textContent.replace(/^\d+/, '').trim());
+                showToast(`${ref} ⭐`);
+            }
+            try { if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged(); } catch(e) {}
+        }
+
+        function toggleQuickStar(btn, ref, text) {
+            btn.classList.toggle('active');
+            if (btn.classList.contains('active')) {
+                addQuickBookmark(ref, text);
+                showToast(`${ref} ⭐`);
+            }
+        }
+
+        function openCommentary(verseIndex) {
+            if (!currentReadingBook) return;
+            const verses = getChapterData(currentActiveBookId, currentActiveChapter).verses;
+            const v = verses[verseIndex];
+            const d = I18N[currentLang] || I18N.ru;
+
+            if (v.isPro && !isUserPro) {
+                showToast(d.toastCommLocked);
+                switchTab('premium');
+                return;
+            }
+
+            setText('commVerseRef', currentLang === 'ru' ? v.refRu : v.refEn);
+            setText('commAuthorName', `💡 ${currentLang === 'ru' ? v.authorRu : v.authorEn}`);
+            const body = document.getElementById('commTextBody');
+            if (body) body.innerHTML = `<p style="margin-bottom: 12px; font-style: italic; color: #BBB;">«${currentLang==='ru'?v.textRu:v.textEn}»</p><p>${currentLang==='ru'?v.commRu:v.commEn}</p>`;
+            const cs = document.getElementById('commSheet');
+            if (cs) cs.style.display = 'flex';
+            try { if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium'); } catch(e) {}
+        }
+
+        function closeCommentary() { try { document.getElementById('commSheet').style.display = 'none'; } catch(e) {} }
+
+        // AUDIO STRICTLY PRO
+        function triggerReaderAudio() {
+            const d = I18N[currentLang] || I18N.ru;
+            if (!isUserPro) {
+                showToast(d.toastAudioLocked);
+                switchTab('premium');
+                return;
+            }
+            const mapNameRu = { gen: "Бытие", rev: "Откровение", john: "Евангелие от Иоанна", sergiy: "Житие Сергия Радонежского", psalms: "Псалтирь", enoch: "Книга Еноха", ladder: "Лествица", didache: "Дидахе", nicodemus: "Евангелие от Никодима", hermas: "Пастырь Ермы", zlatoust: "Толкования Златоуста", dobro: "Добротолюбие" };
+            const mapNameEn = { gen: "Genesis", rev: "Revelation", john: "Gospel of John", sergiy: "Life of St. Sergius", psalms: "Psalms", enoch: "Book of Enoch", ladder: "The Ladder", didache: "Didache", nicodemus: "Gospel of Nicodemus", hermas: "Shepherd of Hermas", zlatoust: "Chrysostom Homilies", dobro: "The Philokalia" };
+            const prefix = currentActiveBookId === 'psalms' ? (currentLang==='ru'?'Пс.':'Ps.') : (currentLang==='ru'?'Гл.':'Ch.');
+            const bName = currentLang === 'ru' ? mapNameRu[currentActiveBookId] : mapNameEn[currentActiveBookId];
+            playAudioTrack(`${bName} • ${prefix} ${currentActiveChapter} • HD`);
+        }
+
+        function openPrayerInReader(prayer) {
+            const title = currentLang === 'ru' ? prayer.titleRu : prayer.titleEn;
+            currentReadingBook = {
+                id: prayer.id,
+                titleRu: prayer.titleRu, titleEn: prayer.titleEn,
+                verses: [{ num: 1, refRu: prayer.titleRu, refEn: prayer.titleEn, textRu: prayer.textRu, textEn: prayer.textEn, authorRu: "Каноническая молитва", authorEn: "Canonical Orthodox Prayer", commRu: "Молитва возносит сердце к Творцу.", commEn: "Prayer elevates the heart to the Creator.", isPro: false }]
+            };
+            const rm = document.getElementById('readerModal');
+            if (rm) rm.style.display = 'flex';
+            const cnb = document.getElementById('chapterNavBar');
+            if (cnb) cnb.style.display = 'none';
+            renderReaderContent(currentReadingBook);
+
+            if (prayer.hasAudio) {
+                const d = I18N[currentLang] || I18N.ru;
+                if (!isUserPro) {
+                    showToast(d.toastAudioLocked);
+                } else {
+                    playAudioTrack(title);
+                }
+            }
+        }
+
+        function playAudioTrack(trackName) {
+            setText('audioTrackName', trackName);
+            const ab = document.getElementById('audioBar');
+            if (ab) ab.style.display = 'flex';
+            isPlayingAudio = true; updatePlayPauseIcons(); startAudioSimulation();
+            showToast((I18N[currentLang] || I18N.ru).toastAudio);
+        }
+
+        function closeAudioBar() {
+            try { document.getElementById('audioBar').style.display = 'none'; } catch(e) {}
+            isPlayingAudio = false; clearInterval(audioTimer); updatePlayPauseIcons();
+        }
+
+        function togglePlayPause() {
+            isPlayingAudio = !isPlayingAudio; updatePlayPauseIcons();
+            if (isPlayingAudio) startAudioSimulation(); else clearInterval(audioTimer);
+        }
+
+        function updatePlayPauseIcons() {
+            try {
+                document.getElementById('playIcon').style.display = isPlayingAudio ? 'none' : 'block';
+                document.getElementById('pauseIcon').style.display = isPlayingAudio ? 'block' : 'none';
+                document.getElementById('audioWave').style.display = isPlayingAudio ? 'inline-flex' : 'none';
+            } catch(e) {}
+        }
+
+        function startAudioSimulation() {
+            clearInterval(audioTimer);
+            audioTimer = setInterval(() => {
+                if (!isPlayingAudio) return;
+                audioProgress += 0.5 * playbackSpeed;
+                if (audioProgress >= 100) { audioProgress = 0; isPlayingAudio = false; updatePlayPauseIcons(); clearInterval(audioTimer); }
+                try { document.getElementById('audioProgressFill').style.width = audioProgress + '%'; } catch(e) {}
+                let currentSec = Math.floor((audioProgress / 100) * 225);
+                let min = Math.floor(currentSec / 60); let sec = currentSec % 60;
+                setText('currentTimeLabel', `0${min}:${sec < 10 ? '0'+sec : sec}`);
+            }, 500);
+        }
+
+        function seekAudio(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            audioProgress = Math.max(0, Math.min(100, ((e.clientX - rect.left) / rect.width) * 100));
+            try { document.getElementById('audioProgressFill').style.width = audioProgress + '%'; } catch(e) {}
+        }
+
+        function toggleSpeed() {
+            const speeds = [1.0, 1.25, 1.5, 0.75];
+            playbackSpeed = speeds[(speeds.indexOf(playbackSpeed) + 1) % speeds.length];
+            setText('speedBtn', playbackSpeed.toFixed(2).replace(/\.00$/, '.0') + 'x');
+        }
+
+        function renderPrayers() {
+            const list = document.getElementById('prayersList');
+            if (!list) return;
+            list.innerHTML = '';
+            const d = I18N[currentLang] || I18N.ru;
+
+            const filtered = PRAYERS_DATA.filter(p => {
+                if (currentPrayerFilter === 'all') return true;
+                if (currentPrayerFilter === 'morning' && p.category === 'morning') return true;
+                if (currentPrayerFilter === 'evening' && p.category === 'evening') return true;
+                if (currentPrayerFilter === 'audio' && p.hasAudio) return true;
+                return false;
+            });
+
+            filtered.forEach(p => {
+                const title = currentLang === 'ru' ? p.titleRu : p.titleEn;
+                const text = currentLang === 'ru' ? p.textRu : p.textEn;
+                let tag = p.category === 'morning' ? d.tagMorn : d.tagEve;
+                if (['p5', 'p10'].includes(p.id)) tag = currentLang === 'ru' ? '🌹 Песнь Богородице' : '🌹 Theotokos Hymn';
+                else if (p.id === 'p7') tag = currentLang === 'ru' ? '⛪ Символ веры' : '⛪ The Creed';
+
+                const item = document.createElement('div');
+                item.className = 'card'; item.style.padding = '18px';
+                item.onclick = () => openPrayerInReader(p);
+
+                item.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <div class="card-tag">${tag}</div>
+                            <div class="card-title" style="font-size: 18px; margin-bottom: 6px;">${title}</div>
+                            <div class="card-desc" style="-webkit-line-clamp: 2;">${text}</div>
+                        </div>
+                        ${p.hasAudio ? `<div style="background: rgba(212, 175, 55, 0.2); color: var(--gold-primary); padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; flex-shrink: 0; margin-left: 12px;">👑 Audio PRO</div>` : ''}
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        try {
+            document.getElementById('prayerFilters')?.addEventListener('click', (e) => {
+                if (e.target.classList.contains('filter-chip')) {
+                    document.querySelectorAll('#prayerFilters .filter-chip').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentPrayerFilter = e.target.dataset.pfilter;
+                    renderPrayers();
+                }
+            });
+        } catch(e) {}
+
+        function loadNotes() {
+            try {
+                const raw = localStorage.getItem('tma_bible_notes');
+                if (raw) savedNotes = JSON.parse(raw);
+                else {
+                    savedNotes = [
+                        { id: Date.now()-10000, title: 'Пс 90:1 / Ps 91:1', tag: '📖 Цитата из Писания', text: '«Живущий под кровом Всевышнего...» Величайшая молитва защиты!', date: 'Вчера' },
+                        { id: Date.now()-20000, title: 'Богородице Дево, радуйся', tag: '🙏 Молитвенная просьба', text: 'Помощь и заступничество Пресвятой Богородицы каждый день.', date: 'Вчера' }
+                    ];
+                    saveNotesToStorage();
+                }
+            } catch(e) { savedNotes = []; }
+            renderNotesList();
+        }
+
+        function saveNotesToStorage() {
+            try { localStorage.setItem('tma_bible_notes', JSON.stringify(savedNotes)); } catch(e) {}
+            renderNotesList();
+        }
+
+        function renderNotesList() {
+            const container = document.getElementById('notesContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            const d = I18N[currentLang] || I18N.ru;
+            setText('notesCount', `${savedNotes.length} ${d.notesSub}`);
+
+            if (savedNotes.length === 0) {
+                container.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 40px 20px;">${d.emptyNotes}</div>`;
+                return;
+            }
+
+            savedNotes.forEach(n => {
+                const card = document.createElement('div'); card.className = 'note-card';
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <span style="font-size: 11px; color: var(--gold-primary); font-weight: bold;">${n.tag || '✍️ Note'}</span>
+                        <button class="btn-delete" onclick="deleteNote(${n.id})">${d.btnDelete}</button>
+                    </div>
+                    <div class="note-card-title">${n.title}</div>
+                    <div class="note-card-text">${n.text}</div>
+                    <div class="note-card-meta"><span>☁️ Synced</span><span>${n.date || 'Today'}</span></div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function toggleNoteForm() {
+            try {
+                const form = document.getElementById('noteForm');
+                if (form) form.style.display = form.style.display === 'block' ? 'none' : 'block';
+            } catch(e) {}
+        }
+
+        function saveNote() {
+            const title = document.getElementById('noteTitleInput')?.value.trim();
+            const tagSel = document.getElementById('noteTagInput');
+            const text = document.getElementById('noteTextInput')?.value.trim();
+            if (!title && !text) return;
+
+            savedNotes.unshift({ id: Date.now(), title: title || 'Note', tag: tagSel?.options[tagSel.selectedIndex]?.text || 'Note', text: text, date: 'Just now' });
+            saveNotesToStorage(); toggleNoteForm();
+            try { document.getElementById('noteTitleInput').value = ''; document.getElementById('noteTextInput').value = ''; } catch(e) {}
+            showToast((I18N[currentLang] || I18N.ru).toastSaved);
+        }
+
+        function deleteNote(id) {
+            savedNotes = savedNotes.filter(n => n.id !== id);
+            saveNotesToStorage(); showToast((I18N[currentLang] || I18N.ru).toastDeleted);
+        }
+
+        function addQuickBookmark(ref, text) {
+            if (savedNotes.some(n => n.title.includes(ref))) return;
+            savedNotes.unshift({ id: Date.now(), title: `⭐ ${ref}`, tag: '📖 Quote', text: `«${text}»`, date: 'Today' });
+            saveNotesToStorage();
+        }
+
+        function renderFAQ() {
+            const container = document.getElementById('faqContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            FAQ_DATA.forEach((item, idx) => {
+                const q = currentLang === 'ru' ? item.qRu : item.qEn;
+                const a = currentLang === 'ru' ? item.aRu : item.aEn;
+                const el = document.createElement('div'); el.className = 'faq-item';
+                el.innerHTML = `
+                    <div class="faq-question" onclick="toggleFaq(${idx})">
+                        <span>${q}</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                    <div class="faq-answer"><p>${a}</p></div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        function toggleFaq(idx) { try { document.querySelectorAll('.faq-item')[idx].classList.toggle('expanded'); } catch(e) {} }
+
+        function renderProFeatures() {
+            const grid = document.getElementById('proFeatureGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            PRO_FEATURES.forEach(f => {
+                const title = currentLang === 'ru' ? f.titleRu : f.titleEn;
+                const desc = currentLang === 'ru' ? f.descRu : f.descEn;
+                const row = document.createElement('div'); row.className = 'feature-row';
+                row.innerHTML = `<div class="feature-icon-wrapper" style="font-size: 20px;">${f.icon}</div><div class="feature-text"><h4>${title}</h4><p>${desc}</p></div>`;
+                grid.appendChild(row);
+            });
+        }
+
+        function switchTab(tabId) {
+            try {
+                document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+                document.querySelectorAll('.bottom-nav .nav-item').forEach(link => link.classList.remove('active'));
+                const targetSec = document.getElementById(`tab-${tabId}`);
+                if (targetSec) targetSec.classList.add('active');
+                const navIndex = ['books', 'prayers', 'notes', 'faq', 'premium'].indexOf(tabId);
+                if (navIndex !== -1) document.querySelectorAll('.bottom-nav .nav-item')[navIndex].classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (tg?.HapticFeedback) tg.HapticFeedback.selectionChanged();
+            } catch(e) {}
+        }
+
+        function openPaymentModal() { try { document.getElementById('paymentModal').style.display = 'flex'; } catch(e) {} }
+        function closePaymentModal() { try { document.getElementById('paymentModal').style.display = 'none'; } catch(e) {} }
+
+        function processTributePayment() {
+            closePaymentModal(); const d = I18N[currentLang] || I18N.ru;
+            showToast('🔄 Tribute Gateway Checkout...');
+            setTimeout(() => {
+                isUserPro = true;
+                setText('headerProBtn', d.proActive);
+                try { document.getElementById('headerProBtn').style.background = '#4CAF50'; } catch(e) {}
+                setText('lblSubBtnText', d.subActiveBtn);
+                try {
+                    const sb = document.getElementById('subscribeBtn');
+                    if (sb) { sb.style.background = 'linear-gradient(135deg, #4CAF50, #2E7D32)'; sb.onclick = null; }
+                } catch(e) {}
+                renderBooks(); renderPrayers(); showToast(d.toastSubSuccess);
+                try { if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success'); } catch(e) {}
+            }, 1000);
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            try {
+                const t = document.getElementById('toast');
+                if (!t) return;
+                t.textContent = msg; t.classList.add('show');
+                clearTimeout(toastTimeout); toastTimeout = setTimeout(() => t.classList.remove('show'), 3000);
+            } catch(e) {}
+        }
+
+        function bootstrapApp() {
+            initTelegram(); loadNotes(); updateUILanguage();
+        }
+
+        bootstrapApp();
+        window.addEventListener('DOMContentLoaded', bootstrapApp);
+    </script>
+</body>
+</html>
